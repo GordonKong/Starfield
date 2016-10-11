@@ -1,57 +1,92 @@
-Particle[] littleMatter;
-		//your code here
+Particle[] particles;
+	//your code here
 void setup()
 {
 	size(500, 500);
-	littleMatter = new Particle[1];
-	for (int i = 0 i < littleMatter.length; i++)
-	{
-		littleMatter[i] = new Particle();
-	}//your code here
+	particles = new Particle[1000];
+	for (int i = 0; i <particles.length; i++) {
+	particles[i] = new NormalParticle();
+    }
+    particles[0] = new OddballParticle();
+	particles[1] = new JumboParticle();
+	particles[3] = new JumboParticle();
+	particles[4] = new JumboParticle();
+	particles[5] = new JumboParticle();
+//your code here
 }
 void draw()
 {
 	background(0);
-	for (int i = 0; i < littleMatter.length; i++)
+	for (int i = 0; i < particles.length; i++)
 	{
-		littleMatter[i].show();
-		littleMatter[i].move();
+		particles[i].show();
+		particles[i].move();
 		 //your code here
 	}
 }
-class NormalParticle
+class NormalParticle implements Particle
 {
 	double myX, myY, mySpeed, myAngle;
-	int myColor;
+	int c;
 
- NormalParticle(int x, int y)
+ NormalParticle()
  {
- 	myX = x;
- 	myY = y;
- 	dSpeed = Math.random()*10;
+ 	myX = 250;
+ 	myY = 250;
+ 	mySpeed = (int)(Math.random()*10);
  	myAngle = Math.PI*2*Math.random();
-
- }
+ 	c = color(0, ((int)(Math.random() * 255)), ((int)(Math.random() * 255)));
+}
+ 
  	void move()
  	{
-
+ 		myX += Math.cos(myAngle) * mySpeed;
+ 		myY += Math.sin(myAngle) * mySpeed;
+ 		if(myX >= 500 || myX <=0 || myY >=500 || myY <=0)
+ 		{
+ 			myX = 250;
+ 			myY = 250;
+ 		} 
  	}
 
  	void show()
  	{
- 		
+ 		fill(c);
+ 		ellipse((float)myX, (float)myY, 5, 5);
  	}
+ }
 
 interface Particle
 {
+	public void move();
+	public void show();
 	//your code here
 }
-class OddballParticle //uses an interface
+class OddballParticle implements Particle//uses an interface
 {
+	double x,y, angle, speed;
+	OddballParticle() {
+		x = 250;
+		y = 250;
+		angle = Math.PI*2*Math.random();
+		speed = (Math.random()*10);
+	}
+	void move() {
+		x +=  Math.cos(angle) * speed;
+		y +=  Math.sin(angle) * speed;
+	}
+
+	void show() {
+		fill(0,255,0);
+		ellipse((float)x,(float)y, 20, 20);
+	}
 	//your code here
 }
-class JumboParticle //uses inheritance
+class JumboParticle extends NormalParticle//uses inheritance
 {
-	//your code here
+	void show() {
+		fill(255,0,255);
+		ellipse((float)myX, (float)myY, 15, 15);
+	}
 }
 
